@@ -9,7 +9,11 @@ import carros.*;
 import exception.NotEnoughResourcesException;
 import insumos.Insumo;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import util.Reader;
 
@@ -17,40 +21,151 @@ import util.Reader;
  *
  * @author Daniel Tadeu Donateli
  */
-public class TrabalhoPOO1 {
-
+public class TrabalhoPOO1 {    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         List<Carro> carros = lerPedidos("./carros.txt");
-        carros.forEach(carro -> {
+        /*carros.forEach(carro -> {
             System.out.println(carro);
-        });
+        });*/
         
         Insumo insumos = lerInsumos("insumos.txt");
-        System.out.println("\n" + insumos);
+        //System.out.println("\n" + insumos);
         
-        carros.forEach((carro) -> {
-            try {
-                insumos.consume(carro.getInsumos());
-            } catch(NotEnoughResourcesException e) {
-                System.out.println("Não possível construir o carro: " + carro.getCodigo());
+        Carro falha = produzir(insumos, carros);
+        int num_dias = 0;
+        do{
+            num_dias++;
+            falha = produzir(insumos, carros);
+        } while(falha == null);
+        
+        //System.out.println("Produção falhou no carro " + falha.getCodigo() + " de cor " + falha.getCor());
+        //System.out.println("Produção durou " + num_dias + " dias");
+        
+        int num_turbo = numCarrosTurbo(carros);
+        
+        //Respostas do Trabalho.
+        System.out.println("1) " + nomeCarrosRepetidos(carros));
+        System.out.println("2) " + numCarrosMenorQue100Cavalos(carros));
+        System.out.println("3) Não turbo: " + (carros.size() - num_turbo) + " Turbo: " + num_turbo);
+        System.out.println("4) " + mediaCilindrada(carros) + " cilindradas");
+        System.out.println("5) Compacto: " + qtdCompacto(carros) + ", Sedan: " + qtdSedan(carros) + " e SUV: " + qtdSUV(carros));
+        System.out.println("6) O estoque suportou " + num_dias + " dias");
+        System.out.println("7) " + falha.getCodigo() + " - " + falha.getCor() + " - " + getInsumosFaltando(insumos, falha));
+                      
+    }
+    
+    private static String nomeCarrosRepetidos(List<Carro> carros) {
+        List<Carro> repetidos = carros.stream()
+            .filter(e -> Collections.frequency(carros, e) > 1)
+            .distinct()
+            .collect(Collectors.toList());
+        
+        //System.out.println(repetidos);
+        
+        if(repetidos.isEmpty()) return "Nenhum foi pedido mais de uma vez.";
+        
+        Iterator<Carro> itr = repetidos.iterator();
+        String resultado = itr.next().getNome();
+        while(itr.hasNext()) {
+            resultado += ", " + itr.next().getNome();
+        }
+        
+        resultado += ".";
+        
+        return resultado;
+    }
+    
+    private static String getInsumosFaltando(Insumo insumos, Carro carro) {
+        HashMap<String, Integer> estoqueInsumos = insumos.getAllFields();
+        HashMap<String, Integer> carroInsumos = carro.getInsumos().getAllFields();
+        ArrayList<String> insumos_faltando = new ArrayList<>();
+            
+        for(Map.Entry<String, Integer> e : estoqueInsumos.entrySet()) {
+            if(e.getValue() < carroInsumos.get(e.getKey())) {
+                insumos_faltando.add(e.getKey());
             }
-        });
+       }
+       //System.out.println(insumos_faltando);
+       
+       if(insumos_faltando.size() == 1) {
+           return insumos_faltando.get(0);
+       }
+       
+       Iterator itr = insumos_faltando.iterator();
+       String resultado = (String) itr.next();
+       while(itr.hasNext()) {
+           resultado += ", " + (String) itr.next();
+       }
+       resultado += ".";
+       
+       return resultado;
+    }
+    
+    private static int qtdSUV(List<Carro> carros) {
+        int qtd = 0;
+        for(Carro carro : carros) {
+            if(carro.getTipo() == CarroType.SUV) qtd++;
+        }
+        return qtd;
+    }
+    
+    private static int qtdCompacto(List<Carro> carros) {
+        int qtd = 0;
+        for(Carro carro : carros) {
+            if(carro.getTipo() == CarroType.COMPACTO) qtd++;
+        }
+        return qtd;
+    }
+    
+    private static int qtdSedan(List<Carro> carros) {
+        int qtd = 0;
+        for(Carro carro : carros) {
+            if(carro.getTipo() == CarroType.SEDAN) qtd++;
+        }
+        return qtd;
+    }
+    
+    private static double mediaCilindrada(List<Carro> carros) {
+        int soma = 0;
+        for(Carro carro : carros) {
+            soma += carro.getMotor().getCilindrada();
+        }
+        return (soma / carros.size());
+    }
+    
+    private static int numCarrosTurbo(List<Carro> carros) {
+        int qtd = 0;
+        for(Carro carro : carros) {
+            if(carro.getMotor().isTurbo()) qtd++;
+        }
+        return qtd;
+    }
+    
+    private static int numCarrosMenorQue100Cavalos(List<Carro> carros) {
+        int qtd = 0;
+        for(Carro carro : carros) {
+            if(carro.getMotor().getCavalos() < 100) qtd++;
+        }
+        return qtd;
+    }
+    
+    private static Carro produzir(Insumo insumos, List<Carro> carros) {
+        Carro erro = null;
+        try{
+            for(Carro carro : carros) {
+                erro = carro;
+                //System.out.println(insumos);
+                insumos.consume(carro.getInsumos());
+            }
+            erro = null;
+        } catch(NotEnoughResourcesException e) {
+        }
         
-        System.out.println("\n" + insumos);
         
-        /*
-        Respostas do Trabalho.
-        System.out.println("1) Não implementado ainda");
-        System.out.println("2) Não implementado ainda");
-        System.out.println("3) Não implementado ainda");
-        System.out.println("4) Não implementado ainda");
-        System.out.println("5) Não implementado ainda");
-        System.out.println("6) Não implementado ainda");
-        System.out.println("7) Não implementado ainda");
-         */               
+        return erro;
     }
     
     private static Insumo lerInsumos(String fileName) {

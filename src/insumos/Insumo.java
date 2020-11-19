@@ -6,6 +6,10 @@
 package insumos;
 
 import exception.NotEnoughResourcesException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -55,6 +59,19 @@ public class Insumo {
             insumos.getCobre() <= this.getCobre() &&
             insumos.getChumbo() <= this.getChumbo()
         );
+    }
+    
+    public HashMap<String, Integer> getAllFields() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("Madeira", this.getMadeira());
+        map.put("Aço", this.getAco());
+        map.put("Ferro", this.getFerro());
+        map.put("Alumínio", this.getAluminio());
+        map.put("Ouro", this.getOuro());
+        map.put("Cobre", this.getCobre());
+        map.put("Chumbo", this.getChumbo());
+        
+        return map;
     }
     
     @Override

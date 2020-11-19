@@ -22,5 +22,5 @@ public class Zeus extends Carro{
     public Insumo getInsumos() {
         return Zeus.insumos;
     }
-    
+
 }

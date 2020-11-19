@@ -5,21 +5,20 @@
  */
 package exception;
 
+import carros.Carro;
+
 /**
  *
  * @author Daniel Tadeu Donateli
  */
-public class NotEnoughResourcesException extends Exception{
-    public NotEnoughResourcesException() { 
-       super(); 
+public class NotEnoughResourcesException extends Exception{    
+    public NotEnoughResourcesException() {
+       super();       
     }
+    
     public NotEnoughResourcesException(String msg) {
        super(msg);
     }
-    public NotEnoughResourcesException(Throwable cause) {
-       super(cause);
-    }
-    public NotEnoughResourcesException(String msg, Throwable cause) {
-       super(msg, cause);
-    }
+      
+
 }

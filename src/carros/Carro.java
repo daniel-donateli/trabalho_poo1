@@ -1,6 +1,7 @@
 package carros;
 
 import insumos.Insumo;
+import java.util.Objects;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -34,6 +35,25 @@ public abstract class Carro {
         return 
         "Código: " + this.getCodigo() + "  Nome: " + this.getNome() + "  Cor: " 
         + this.getCor() + "  Tipo: " + this.getTipo() + "  "+ this.getMotor();
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+        Carro carro;
+        if(!(obj instanceof Carro)) {
+            return false;
+        } else {
+            carro = (Carro) obj;
+            return (
+                    this.codigo.equals(carro.getCodigo()));
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.codigo);
+        return hash;
     }
 
     public abstract Insumo getInsumos();
@@ -69,9 +89,9 @@ public abstract class Carro {
     /**
      * @return o motor
      */
-    public String getMotor() {
-        return motor.toString();
+    public Motor getMotor() {
+        return motor;
     }
     
-    
+
 }
