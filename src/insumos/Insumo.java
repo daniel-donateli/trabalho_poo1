@@ -45,7 +45,16 @@ public class Insumo {
             this.setCobre(this.getCobre() - insumos.getCobre());
             this.setChumbo(this.getChumbo() - insumos.getChumbo());
         } else {
-            throw new NotEnoughResourcesException();
+            HashMap<String, Integer> estoqueInsumos = this.getAllFields();
+            HashMap<String, Integer> carroInsumos = insumos.getAllFields();
+            ArrayList<String> insumos_faltando = new ArrayList<>();
+            
+            for(Map.Entry<String, Integer> e : estoqueInsumos.entrySet()) {
+                if(e.getValue() < carroInsumos.get(e.getKey())) {
+                    insumos_faltando.add(e.getKey());
+                }
+            }
+            throw new NotEnoughResourcesException(insumos_faltando);
         }
     }
     

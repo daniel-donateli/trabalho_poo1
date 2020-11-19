@@ -5,20 +5,17 @@
  */
 package exception;
 
-import carros.Carro;
+import java.util.List;
 
 /**
  *
  * @author Daniel Tadeu Donateli
  */
-public class NotEnoughResourcesException extends Exception{    
-    public NotEnoughResourcesException() {
-       super();       
-    }
-    
-    public NotEnoughResourcesException(String msg) {
-       super(msg);
-    }
+public class NotEnoughResourcesException extends Exception{
+    public final List<String> listaInsumosFaltando;
       
-
+    public NotEnoughResourcesException(List<String> listaInsumos) {
+        super();
+        this.listaInsumosFaltando = listaInsumos;      
+    }
 }

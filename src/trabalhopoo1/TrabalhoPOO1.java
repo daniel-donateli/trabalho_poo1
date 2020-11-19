@@ -21,7 +21,9 @@ import util.Reader;
  *
  * @author Daniel Tadeu Donateli
  */
-public class TrabalhoPOO1 {    
+public class TrabalhoPOO1 {
+    public static List<String> listaInsumosFaltando;
+    
     /**
      * @param args the command line arguments
      */
@@ -53,7 +55,7 @@ public class TrabalhoPOO1 {
         System.out.println("4) " + mediaCilindrada(carros) + " cilindradas");
         System.out.println("5) Compacto: " + qtdCompacto(carros) + ", Sedan: " + qtdSedan(carros) + " e SUV: " + qtdSUV(carros));
         System.out.println("6) O estoque suportou " + num_dias + " dias");
-        System.out.println("7) " + falha.getCodigo() + " - " + falha.getCor() + " - " + getInsumosFaltando(insumos, falha));
+        System.out.println("7) " + falha.getCodigo() + " - " + falha.getCor() + " - " + getInsumosFaltando(listaInsumosFaltando));
                       
     }
     
@@ -78,8 +80,8 @@ public class TrabalhoPOO1 {
         return resultado;
     }
     
-    private static String getInsumosFaltando(Insumo insumos, Carro carro) {
-        HashMap<String, Integer> estoqueInsumos = insumos.getAllFields();
+    private static String getInsumosFaltando(List<String> insumos_faltando) {
+        /*HashMap<String, Integer> estoqueInsumos = insumos.getAllFields();
         HashMap<String, Integer> carroInsumos = carro.getInsumos().getAllFields();
         ArrayList<String> insumos_faltando = new ArrayList<>();
             
@@ -89,7 +91,7 @@ public class TrabalhoPOO1 {
             }
        }
        //System.out.println(insumos_faltando);
-       
+       */
        if(insumos_faltando.size() == 1) {
            return insumos_faltando.get(0);
        }
@@ -162,6 +164,7 @@ public class TrabalhoPOO1 {
             }
             erro = null;
         } catch(NotEnoughResourcesException e) {
+            listaInsumosFaltando = e.listaInsumosFaltando;
         }
         
         
