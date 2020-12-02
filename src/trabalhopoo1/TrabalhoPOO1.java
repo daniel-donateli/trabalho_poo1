@@ -10,10 +10,8 @@ import exception.NotEnoughResourcesException;
 import insumos.Insumo;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import util.Reader;
 
@@ -29,12 +27,8 @@ public class TrabalhoPOO1 {
      */
     public static void main(String[] args) {
         List<Carro> carros = lerPedidos("./carros.txt");
-        /*carros.forEach(carro -> {
-            System.out.println(carro);
-        });*/
         
         Insumo insumos = lerInsumos("insumos.txt");
-        //System.out.println("\n" + insumos);
         
         Carro falha = produzir(insumos, carros);
         int num_dias = 0;
@@ -43,14 +37,11 @@ public class TrabalhoPOO1 {
             falha = produzir(insumos, carros);
         } while(falha == null);
         
-        //System.out.println("Produção falhou no carro " + falha.getCodigo() + " de cor " + falha.getCor());
-        //System.out.println("Produção durou " + num_dias + " dias");
-        
-        int num_turbo = numCarrosTurbo(carros);
+        int num_turbo = qtdCarrosTurbo(carros);
         
         //Respostas do Trabalho.
         System.out.println("1) " + nomeCarrosRepetidos(carros));
-        System.out.println("2) " + numCarrosMenorQue100Cavalos(carros));
+        System.out.println("2) " + qtdCarrosMenorQue100Cavalos(carros));
         System.out.println("3) Não turbo: " + (carros.size() - num_turbo) + " Turbo: " + num_turbo);
         System.out.println("4) " + mediaCilindrada(carros) + " cilindradas");
         System.out.println("5) Compacto: " + qtdCompacto(carros) + ", Sedan: " + qtdSedan(carros) + " e SUV: " + qtdSUV(carros));
@@ -59,13 +50,17 @@ public class TrabalhoPOO1 {
                       
     }
     
+    /**
+     * Retorna uma String formatada contendo os carros repetidos numa lista de 
+     * objetos Carro.
+     * 
+     * @param carros lista de carros.
+     */
     private static String nomeCarrosRepetidos(List<Carro> carros) {
         List<Carro> repetidos = carros.stream()
             .filter(e -> Collections.frequency(carros, e) > 1)
             .distinct()
             .collect(Collectors.toList());
-        
-        //System.out.println(repetidos);
         
         if(repetidos.isEmpty()) return "Nenhum foi pedido mais de uma vez.";
         
@@ -80,18 +75,12 @@ public class TrabalhoPOO1 {
         return resultado;
     }
     
+    /**
+     * Retorna uma String formatada de uma lista de insumos.
+     * 
+     * @param insumos_faltando lista de Strings com os nomes dos insumos.
+     */
     private static String getInsumosFaltando(List<String> insumos_faltando) {
-        /*HashMap<String, Integer> estoqueInsumos = insumos.getAllFields();
-        HashMap<String, Integer> carroInsumos = carro.getInsumos().getAllFields();
-        ArrayList<String> insumos_faltando = new ArrayList<>();
-            
-        for(Map.Entry<String, Integer> e : estoqueInsumos.entrySet()) {
-            if(e.getValue() < carroInsumos.get(e.getKey())) {
-                insumos_faltando.add(e.getKey());
-            }
-       }
-       //System.out.println(insumos_faltando);
-       */
        if(insumos_faltando.size() == 1) {
            return insumos_faltando.get(0);
        }
@@ -106,6 +95,10 @@ public class TrabalhoPOO1 {
        return resultado;
     }
     
+    /**
+     * Retorna a quantidade de Carro do tipo SUV em uma lista de Carro.
+     * @param carros lista de carros.
+     */
     private static int qtdSUV(List<Carro> carros) {
         int qtd = 0;
         for(Carro carro : carros) {
@@ -114,6 +107,10 @@ public class TrabalhoPOO1 {
         return qtd;
     }
     
+    /**
+     * Retorna a quantidade de Carro do tipo Compacto em uma lista de Carro.
+     * @param carros lista de carros.
+     */
     private static int qtdCompacto(List<Carro> carros) {
         int qtd = 0;
         for(Carro carro : carros) {
@@ -122,6 +119,10 @@ public class TrabalhoPOO1 {
         return qtd;
     }
     
+    /**
+     * Retorna a quantidade de Carro do tipo Sedan em uma lista de Carro.
+     * @param carros lista de carros.
+     */
     private static int qtdSedan(List<Carro> carros) {
         int qtd = 0;
         for(Carro carro : carros) {
@@ -130,6 +131,10 @@ public class TrabalhoPOO1 {
         return qtd;
     }
     
+    /**
+     * Retorna a média de cilindradas em uma lista de Carro.
+     * @param carros lista de carros.
+     */
     private static double mediaCilindrada(List<Carro> carros) {
         int soma = 0;
         for(Carro carro : carros) {
@@ -138,7 +143,11 @@ public class TrabalhoPOO1 {
         return (soma / carros.size());
     }
     
-    private static int numCarrosTurbo(List<Carro> carros) {
+    /**
+     * Retorna a quantidade de carros turbo em uma lista de Carro.
+     * @param carros lista de carros.
+     */
+    private static int qtdCarrosTurbo(List<Carro> carros) {
         int qtd = 0;
         for(Carro carro : carros) {
             if(carro.getMotor().isTurbo()) qtd++;
@@ -146,7 +155,12 @@ public class TrabalhoPOO1 {
         return qtd;
     }
     
-    private static int numCarrosMenorQue100Cavalos(List<Carro> carros) {
+    /**
+     * Retorna a quantidade de carros com menos que 100 cavalos de potência em 
+     * uma lista de Carro.
+     * @param carros lista de carros.
+     */
+    private static int qtdCarrosMenorQue100Cavalos(List<Carro> carros) {
         int qtd = 0;
         for(Carro carro : carros) {
             if(carro.getMotor().getCavalos() < 100) qtd++;
@@ -154,12 +168,19 @@ public class TrabalhoPOO1 {
         return qtd;
     }
     
+    /**
+     * Este método tenta produzir uma lista de Carro.
+     * <p>
+     * Se os insumos não forem suficientes para produzir a lista, altera o 
+     * valor da variável estática listaInsumosFaltando e retorna o carro em
+     * que faltaram os insumos. Caso contrário, retorna null.
+     * </p>
+     */
     private static Carro produzir(Insumo insumos, List<Carro> carros) {
         Carro erro = null;
         try{
             for(Carro carro : carros) {
                 erro = carro;
-                //System.out.println(insumos);
                 insumos.consume(carro.getInsumos());
             }
             erro = null;
@@ -171,9 +192,14 @@ public class TrabalhoPOO1 {
         return erro;
     }
     
-    private static Insumo lerInsumos(String fileName) {
+    /**
+     * Lê o arquivo de insumos e retorna o estoque de insumos ou retorna null 
+     * caso ocorra algum erro.
+     * @param filePath caminho para o arquivo de insumos.
+     */
+    private static Insumo lerInsumos(String filePath) {
         try {
-            List<String> lines = Reader.readFile(fileName);           
+            List<String> lines = Reader.readFile(filePath);           
             List<String> list = lines
                                 .stream()
                                 .map(x -> x.split("\\s+")[1])
@@ -190,21 +216,34 @@ public class TrabalhoPOO1 {
         } catch(NumberFormatException e) {
             e.printStackTrace();
             System.out.println("Arquivo de insumos contém dados inválidos");
+            System.exit(1);
         } catch(IndexOutOfBoundsException e) {
             e.printStackTrace();
+            System.exit(1);
         }
         return null;
     }
     
-    private static List<Carro> lerPedidos(String fileName) {
-        List<String> pedidos = Reader.readFile(fileName);
+    /**
+     * Lê o arquivo de carros e retorna uma lista de Carro.
+     * @param filePath caminho para o arquivo de carros.
+     */
+    private static List<Carro> lerPedidos(String filePath) {
+        List<String> pedidos = Reader.readFile(filePath);
         ArrayList<Carro> carros = new ArrayList();
         pedidos.forEach(pedido -> {
             carros.add(gerarCarro(pedido));
         });
-        return carros.stream().filter(x -> x != null).collect(Collectors.toList());
+        return carros
+               .stream()
+               .filter(x -> x != null)
+               .collect(Collectors.toList());
     }
     
+    /**
+     * Retorna um Carro a partir de uma string com o código e cor do carro.
+     * @param pedido String quem contém o código e cor do carro.
+     */
     private static Carro gerarCarro(String pedido) {
         String arr[] = pedido.split("\\s+");
         

@@ -17,6 +17,11 @@ import java.util.Scanner;
  * @author Daniel Tadeu Donateli
  */
 public class Reader {
+    /**
+     * @param fileName nome do arquivo a ser lido.
+     * @return retorna uma lista de Strings onde cada elemento é uma 
+     * linha do arquivo de texto.
+     */
     public static List<String> readFile(String fileName) {
         try {
             ArrayList<String> list = new ArrayList();
