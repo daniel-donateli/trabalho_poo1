@@ -1,6 +1,6 @@
 # Scripts para gerar os arquivos de texto
 
-Para rodar o script é necessário a versão 2.0 ou superior para python2 ou 3.0 ou superior para python3
+Para rodar o script é necessário a versão 2.7 ou superior para python2 ou 3.2 ou superior para python3
 
 ## Uso
 ```sh
