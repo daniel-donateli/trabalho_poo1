@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package insumos;
 
 import exception.NotEnoughResourcesException;
@@ -11,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @author Daniel Tadeu Donateli
  */
 public class Insumo {
@@ -34,6 +28,11 @@ public class Insumo {
         this.chumbo = chumbo;
     }
     
+    /**
+     * Consume insumos do objeto.
+     * @param insumos insumos a serem consumidos.
+     * @throws NotEnoughResourcesException Se não houver insumos suficientes.
+     */
     public void consume(Insumo insumos) throws NotEnoughResourcesException {
         if(this.canConsume(insumos)) {
             this.setMadeira(this.getMadeira() - insumos.getMadeira());

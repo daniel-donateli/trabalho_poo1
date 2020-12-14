@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package trabalhopoo1;
 
 import carros.*;
@@ -16,10 +11,10 @@ import java.util.stream.Collectors;
 import util.Reader;
 
 /**
- *
  * @author Daniel Tadeu Donateli
  */
 public class TrabalhoPOO1 {
+    // Lista dos insumos que faltaram
     public static List<String> listaInsumosFaltando;
     
     /**
@@ -28,7 +23,7 @@ public class TrabalhoPOO1 {
     public static void main(String[] args) {
         List<Carro> carros = lerPedidos("./carros.txt");
         
-        Insumo insumos = lerInsumos("insumos.txt");
+        Insumo insumos = lerInsumos("./insumos.txt");
         
         Carro falha = produzir(insumos, carros);
         int num_dias = 0;
